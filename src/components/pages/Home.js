@@ -4,7 +4,7 @@ export default function Home() {
   const navigate = useNavigate();
   const onBookClick = () => {
     navigate("/booking");
-  }
+  };
   return (
     <>
       <section className="call-to-action">
@@ -16,12 +16,14 @@ export default function Home() {
             Street in Chicago, Illionis. We focus on traditional recipes served
             with a modern twist.
           </p>
-          <button onClick={onBookClick}>Reserve a table</button>
+          <button onClick={onBookClick} aria-label="Reserve a table">Reserve a table</button>
         </div>
-        <img
-          src="https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg"
-          alt="call to action image"
-        />
+        <div className="call-to-action-image">
+          <img
+            src="https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg"
+            alt="call to action image"
+          />
+        </div>
       </section>
     </>
   );

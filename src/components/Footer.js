@@ -1,11 +1,19 @@
+import { Link } from "react-router-dom";
+
 export default function Footer() {
   return (
     <footer className="app-footer">
+      <li>
+        <img
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9vTQQKswoaJXT5OQWWVtvyH9GKBoKlxMk1g&s"
+          alt="logo"
+        />
+      </li>
       <div>
         <b>Navigation</b>
         <ul>
           <li>
-            <a>Home</a>
+            <Link to="/">Home</Link>
           </li>
           <li>
             <a>About</a>
@@ -14,7 +22,7 @@ export default function Footer() {
             <a>Menu</a>
           </li>
           <li>
-            <a>Reservations</a>
+            <Link to="/booking">Reservation</Link>
           </li>
           <li>
             <a>Order online</a>

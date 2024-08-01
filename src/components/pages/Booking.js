@@ -1,69 +1,86 @@
 import { useState } from "react";
-export default function Booking() {
-  const [availableTimes, setAvailableTimes] = useState([
-    "17:00",
-    "18:00",
-    "19:00",
-    "20:00",
-    "21:00",
-    "22:00",
-  ]);
+import { submitAPI } from "../../api/booking";
+import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 
-  const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
-  const [time, setTime] = useState("17:00");
-  const [guests, setGuests] = useState("2");
-  const [occasion, setOccasion] = useState("Birthday");
+export default function Booking(props) {
+  const schema = yup
+    .object({
+      date: yup
+        .string()
+        .required()
+        .default(() => new Date().toISOString().split("T")[0]),
+      time: yup
+        .string()
+        .required()
+        .default(props.availableTimes[0]),
+      guests: yup
+        .number()
+        .required()
+        .min(1, "At least one person.")
+        .max(10, "Max 10 people.")
+        .typeError("Value required.")
+        .default(2),
+      occasion: yup.string().required().default("Birthday"),
+    })
+    .required();
 
-  const onSubmit = (e) => {
-    e.preventDefault();
-    console.log("Date:", date);
-    console.log("Time:", time);
-    console.log("Guests:", guests);
-    console.log("Occasion:", occasion);
+  const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+  } = useForm({
+    mode: "all",
+    resolver: yupResolver(schema),
+    defaultValues: schema.cast(),
+  });
+
+  const onSubmit = (data) => {
+    console.log(data);
+    submitAPI(data);
+    navigate("/confirmation");
+  };
+
+  const onDateChange = (date) => {
+    props.setAvailableTimes({ date });
   };
   return (
     <main className="booking">
-      <form
-        style={{ display: "grid", maxWidth: "200px", gap: "20px" }}
-        onSubmit={onSubmit}
-      >
+      <form className="booking-form" onSubmit={handleSubmit(onSubmit)}>
         <label for="res-date">Choose date</label>
         <input
           type="date"
           id="res-date"
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
+          {...register("date", {
+            onChange: (e) => onDateChange(e.target.value),
+          })}
         />
+        <span>{errors.date?.message}</span>
         <label for="res-time">Choose time</label>
-        <select
-          id="res-time"
-          value={time}
-          onChange={(e) => setTime(e.target.value)}
-        >
-          {availableTimes.map((time) => (
+        <select id="res-time" {...register("time")}>
+          {props.availableTimes.map((time) => (
             <option>{time}</option>
           ))}
         </select>
+        <span>{errors.time?.message}</span>
+
         <label for="guests">Number of guests</label>
-        <input
-          type="number"
-          placeholder="1"
-          min="1"
-          max="10"
-          id="guests"
-          value={guests}
-          onChange={(e) => setGuests(e.target.value)}
-        />
+        <input type="number" id="guests" {...register("guests")} />
+        <span>{errors.guests?.message}</span>
         <label for="occasion">Occasion</label>
-        <select
-          id="occasion"
-          value={occasion}
-          onChange={(e) => setOccasion(e.target.value)}
-        >
+        <select id="occasion" {...register("occasion")}>
           <option>Birthday</option>
           <option>Anniversary</option>
         </select>
-        <input type="submit" value="Make Your reservation" />
+        <input
+          aria-label="Make Your reservation"
+          type="submit"
+          value="Make Your reservation"
+          disabled={!isValid}
+        />
       </form>
     </main>
   );
