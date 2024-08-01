@@ -16,19 +16,19 @@ export default function Footer() {
             <Link to="/">Home</Link>
           </li>
           <li>
-            <a>About</a>
+            <Link to="/about">About</Link>
           </li>
           <li>
-            <a>Menu</a>
+            <Link to="/menu">Menu</Link>
           </li>
           <li>
             <Link to="/booking">Reservation</Link>
           </li>
           <li>
-            <a>Order online</a>
+            <Link to="/order">Order online</Link>
           </li>
           <li>
-            <a>Login</a>
+            <Link to="/login">Login</Link>
           </li>
         </ul>
       </div>

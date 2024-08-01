@@ -7,15 +7,13 @@ import Booking from "./components/pages/Booking";
 import { useReducer, useState } from "react";
 import { fetchAPI } from "./api/booking";
 import Confirmation from "./components/pages/Confirmation";
-
+export const updateTimes = (action) => {
+  return fetchAPI(new Date(action.date));
+};
+export const initializeTimes = () => {
+  return fetchAPI(new Date());
+};
 function App() {
-  const updateTimes = (availableTimes, action) => {
-    return fetchAPI(new Date(action.date));
-  };
-  const initializeTimes = () => {
-    return fetchAPI(new Date());
-  };
-
   const [availableTimes, dispatch] = useReducer(updateTimes, initializeTimes());
 
   return (
@@ -32,7 +30,8 @@ function App() {
             />
           }
         />
-        <Route path="/confirmation" element={<Confirmation/>} />
+        <Route path="/confirmation" element={<Confirmation />} />
+        <Route path="*" element={<><hr/><main className="default-page"><img src="https://www.littlelemon.ie/wp-content/uploads/Little-Lemon-Logo-small.png" alt="little lemon"/></main><hr/></>} />
       </Routes>
       <Footer />
     </>

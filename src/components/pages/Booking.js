@@ -50,7 +50,7 @@ export default function Booking(props) {
   return (
     <main className="booking">
       <form className="booking-form" onSubmit={handleSubmit(onSubmit)}>
-        <label for="res-date">Choose date</label>
+        <label htmlFor="res-date">Choose date</label>
         <input
           type="date"
           id="res-date"
@@ -59,18 +59,18 @@ export default function Booking(props) {
           })}
         />
         <span>{errors.date?.message}</span>
-        <label for="res-time">Choose time</label>
+        <label htmlFor="res-time">Choose time</label>
         <select id="res-time" {...register("time")}>
-          {props.availableTimes.map((time) => (
-            <option>{time}</option>
+          {props.availableTimes.map((time, index) => (
+            <option key={index}>{time}</option>
           ))}
         </select>
         <span>{errors.time?.message}</span>
 
-        <label for="guests">Number of guests</label>
+        <label htmlFor="guests">Number of guests</label>
         <input type="number" id="guests" {...register("guests")} />
         <span>{errors.guests?.message}</span>
-        <label for="occasion">Occasion</label>
+        <label htmlFor="occasion">Occasion</label>
         <select id="occasion" {...register("occasion")}>
           <option>Birthday</option>
           <option>Anniversary</option>
